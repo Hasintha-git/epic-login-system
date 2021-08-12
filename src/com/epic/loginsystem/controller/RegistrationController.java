@@ -30,6 +30,7 @@ public class RegistrationController extends HttpServlet {
         String address = req.getParameter("address");//collect data
         String contact = req.getParameter("phone");//collect data
         String password = req.getParameter("password");//collect data
+        String role=req.getParameter("role");//collect data
 
         Registration registration=new Registration(); //create object type of registration
         registration.setEmail(email); //assign data to using set method
@@ -37,6 +38,9 @@ public class RegistrationController extends HttpServlet {
         registration.setAddress(address); //assign data to using set method
         registration.setContact(contact); //assign data to using set method
         registration.setPassword(password); //assign data to using set method
+        registration.setRole(role);
+
+            System.out.println(registration.toString());
 
         boolean b = registrationDao.registerEmployee(registration); // send registration model type data to dao
         PrintWriter writer = resp.getWriter();
@@ -62,9 +66,16 @@ public class RegistrationController extends HttpServlet {
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             String p = r.getPassword();
+            String role=r.getRole();
             if (p.equals(password)){ //check password matched
                 System.out.println("success");
-                resp.sendRedirect("Home.jsp");
+                if (role.equals("customer")){
+                    System.out.println("customer home");
+                    resp.sendRedirect("Home.jsp");
+                }else{
+                    resp.sendRedirect("AdminHome.jsp");
+                }
+
 //                writer.write("{\"operation\":\"success\"}"); //send response to front end if this task success
             }else{
                 System.out.println("failed");

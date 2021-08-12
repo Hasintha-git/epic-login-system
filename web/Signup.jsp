@@ -61,16 +61,30 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     $("#signup").click(function (){
-        var form = $("#signinForm").serialize();
+        var email = $("#email").val();
+        var userName = $("#userName").val();
+        var address = $("#address").val();
+        var contact = $("#phone").val();
+        var password = $("#password").val();
+        var role = "customer";
+        // var form = $("#signinForm").serialize();
+
         $.ajax({
             url: '/LoginSystem/signup',
             method: 'POST',
             async: true,
-            data: form,
+            data: {
+                "email":email,
+                "userName":userName,
+                "address":address,
+                "contact":contact,
+                "password":password,
+                "role":role,
+            },
             dataType: "json",
             success: function (response,textState, xhr) {
                 if (response.operation==="success"){
-                    window.location.href="Signin.jsp.jsp"
+                    window.location.href="Signin.jsp"
                 }else{
                     window.location.href="Signup.jsp";
                     alert("something is error")

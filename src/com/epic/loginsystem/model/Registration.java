@@ -6,16 +6,18 @@ public class Registration {
     private String address;
     private String contact;
     private String password;
+    private String role;
 
     public Registration() {
     }
 
-    public Registration(String email, String userName, String address, String contact, String password) {
+    public Registration(String email, String userName, String address, String contact, String password, String role) {
         this.email = email;
         this.userName = userName;
         this.address = address;
         this.contact = contact;
         this.password = password;
+        this.role = role;
     }
 
     public String getEmail() {
@@ -58,14 +60,23 @@ public class Registration {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "Registration{" +
                 "email='" + email + '\'' +
                 ", userName='" + userName + '\'' +
                 ", address='" + address + '\'' +
-                ", contact=" + contact +
+                ", contact='" + contact + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

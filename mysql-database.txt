@@ -7,6 +7,7 @@ CREATE TABLE Registration(
 	userName VARCHAR(30),
 	address VARCHAR(100),
 	contact VARCHAR(11),
-	password VARCHAR(15),
+	password VARCHAR(15) NOT NULL,
+	role VARCHAR(10),
 	CONSTRAINT PRIMARY KEY (email)
 );
