@@ -1,0 +1,12 @@
+CREATE DATABASE epicLoginSystem;
+
+USE epicLoginSystem;
+
+CREATE TABLE Registration(
+	email VARCHAR(30) NOT NULL,
+	userName VARCHAR(30),
+	address VARCHAR(100),
+	contact VARCHAR(11),
+	password VARCHAR(15),
+	CONSTRAINT PRIMARY KEY (email)
+);
