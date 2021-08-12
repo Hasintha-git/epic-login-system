@@ -1,18 +1,20 @@
 package com.epic.loginsystem.dao;
 
+
+import com.epic.loginsystem.db.DBConnection;
 import com.epic.loginsystem.model.Registration;
 import java.sql.*;
 
 public class RegistrationDao {
 
     public boolean registerEmployee(Registration registration) throws ClassNotFoundException {
-        System.out.println("dao comming");
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = null;
+        DBConnection connection = null;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/epicLoginSystem", "root", "1234");
+            connection = new DBConnection();
 
-        PreparedStatement pstm = connection.prepareStatement("insert into Registration values(?,?,?,?,?)");
+        System.out.println("dao comming");
+
+        PreparedStatement pstm = connection.getConnection().prepareStatement("insert into Registration values(?,?,?,?,?)");
         System.out.println("db go");
         pstm.setObject(1,registration.getEmail());
         pstm.setObject(2,registration.getUserName());
@@ -29,17 +31,25 @@ public class RegistrationDao {
         }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            try {
+                connection.connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return false;
 
     }
 
-    public Registration signIn(String email) throws ClassNotFoundException, SQLException {
+    public Registration signIn(String email) throws ClassNotFoundException{
         Registration r=new Registration();
         //connect with database and get data from my sql database - registration table
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/epicLoginSystem", "root", "1234");
-        PreparedStatement pstm = connection.prepareStatement("select * from Registration where email=?");
+        DBConnection dbConnection = null;
+        try {
+            dbConnection = new DBConnection();
+
+        PreparedStatement pstm = dbConnection.getConnection().prepareStatement("select * from Registration where email=?");
         pstm.setObject(1,email);
         ResultSet rst = pstm.executeQuery();
 
@@ -55,6 +65,16 @@ public class RegistrationDao {
              r.setContact(contact);//data set to registration model
              r.setPassword(pass);//data set to registration model
         }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            try {
+                dbConnection.connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
         return r;
 
     }

@@ -20,7 +20,8 @@
         <p class="main-txt">Hey! Are You New user ?<br><spam style="color: gray;font-size: 18px"> please be Sign up first </spam></p>
     </div>
 
-    <form id="signinForm" name="signinForm" onsubmit="validateForm()">
+<%--        send data to back end using form --%>
+    <form id="signinForm" name="signinForm" action="signup" method="get" >
         <div class="input-box-2">
 
             <div class="input-box-sub">
@@ -29,7 +30,6 @@
                     <input type="email" placeholder="e mail" class="input-user" name="email" id="email"  required=""  >
                     <span class="underline"></span>
                 </div>
-
                 <div>
                     <input type="text" placeholder="pass word" class="input-user" id="password" name="password" required="" >
                     <span class="underline"></span>
@@ -39,7 +39,7 @@
         </div>
         <%--        button style section--%>
         <div class="input-box-3">
-            <button form="signinForm" type="button" class="btnSignin" id="signin" name="signin" >sign in</button>
+            <button form="signinForm" type="submit" class="btnSignin" id="signin" name="signin" >sign in</button>
             <a  class="btnRoute" id="routesignin" >sign up</a>
         </div>
 
@@ -53,31 +53,31 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    $("#signin").click(function (){
-        var email = $("#email").val();
-        var password = $("#password").val();
-
-        $.ajax({
-            url: '/LoginSystem/signup',
-            method: 'GET',//go to doGet method
-            async: true,
-            data: {"email":email,"password":password},//json data
-            dataType: "json",// convert response into JSON if valid
-            success: function (response,textState, xhr) {
-                console.log(textState)
-                console.log(xhr)
-                console.log(response.operation);
-                if (response.operation==="success"){
-                    window.location.href="Home.jsp"
-                }else{
-                    window.location.href="Signin.jsp";
-                    alert("something is error")
-                }
-
-            },
-
-        });
-    });
+    // $("#signin").click(function (){
+    //     var email = $("#email").val();
+    //     var password = $("#password").val();
+    //
+    //     $.ajax({
+    //         url: '/LoginSystem/signup',
+    //         method: 'GET',//go to doGet method
+    //         async: true,
+    //         data: {"email":email,"password":password},//json data
+    //         dataType: "json",// convert response into JSON if valid
+    //         success: function (response,textState, xhr) {
+    //             console.log(textState)
+    //             console.log(xhr)
+    //             console.log(response.operation);
+    //             if (response.operation==="success"){
+    //                 window.location.href="Home.jsp"
+    //             }else{
+    //                 window.location.href="Signin.jsp";
+    //                 alert("something is error")
+    //             }
+    //
+    //         },
+    //
+    //     });
+    // });
 
 
     $("#routesignin").click(function (){

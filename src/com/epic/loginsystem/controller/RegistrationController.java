@@ -55,26 +55,26 @@ public class RegistrationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email"); //collect data
+        System.out.println(email);
         String password = req.getParameter("password"); //collect data
         try {
             Registration r = registrationDao.signIn(email); // send data for dao and catch it return data
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             String p = r.getPassword();
-
             if (p.equals(password)){ //check password matched
                 System.out.println("success");
-                writer.write("{\"operation\":\"success\"}"); //send response to front end if this task success
+                resp.sendRedirect("Home.jsp");
+//                writer.write("{\"operation\":\"success\"}"); //send response to front end if this task success
             }else{
                 System.out.println("failed");
-                writer.write("{\"operation\":\"failed\"}");//send response to front end if this task failed
+                resp.sendRedirect("Signin.jsp");
+//                writer.write("{\"operation\":\"failed\"}");//send response to front end if this task failed
             }
 
             writer.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
