@@ -31,7 +31,7 @@
                     <span class="underline"></span>
                 </div>
                 <div>
-                    <input type="text" placeholder="pass word" class="input-user" id="password" name="password" required="" >
+                    <input type="text" placeholder="password" class="input-user" id="password" name="password" required="" >
                     <span class="underline"></span>
                 </div>
 

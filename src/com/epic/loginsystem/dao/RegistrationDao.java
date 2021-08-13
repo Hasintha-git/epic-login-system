@@ -4,6 +4,7 @@ package com.epic.loginsystem.dao;
 import com.epic.loginsystem.db.DBConnection;
 import com.epic.loginsystem.model.Registration;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class RegistrationDao {
 
@@ -78,5 +79,24 @@ public class RegistrationDao {
             }
         }
         return r;
+    }
+
+    public ArrayList<Registration> getDetails() throws SQLException, ClassNotFoundException {
+        System.out.println("come dao");
+        Registration r = new Registration();
+        DBConnection dbConnection=null;
+        ResultSet rst=null;
+             dbConnection = new DBConnection();
+             PreparedStatement pstm = dbConnection.getConnection().prepareStatement("SELECT * FROM Registration");
+        rst = pstm.executeQuery();
+        System.out.println("get result");
+        ArrayList<Registration> load=new ArrayList<>();
+        while (rst.next()){
+            System.out.println("while ");
+            load.add(new Registration(rst.getString(1),rst.getString(2),rst.getString(3),rst.getString(4),rst.getString(5), rst.getString(6)));
+
+            System.out.println("Add data");
+        }
+        return load;
     }
 }

@@ -4,6 +4,7 @@
 .txt-title {
     color: white;
 }
+
 .body {
     display: flex;
     justify-content: space-around;
@@ -280,7 +281,15 @@
     align-items: center;
     flex-direction: column;
 }
-
+.popup .content-2 {
+    max-height: 15%;
+    min-height: 15%;
+    overflow: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
 @media screen and (max-width: 700px){
     .box{
         width: 70%;

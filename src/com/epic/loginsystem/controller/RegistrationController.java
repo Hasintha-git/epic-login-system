@@ -28,7 +28,7 @@ public class RegistrationController extends HttpServlet {
         String userName = req.getParameter("userName"); //collect data
         String email = req.getParameter("email");//collect data
         String address = req.getParameter("address");//collect data
-        String contact = req.getParameter("phone");//collect data
+        String contact = req.getParameter("contact");//collect data
         String password = req.getParameter("password");//collect data
         String role=req.getParameter("role");//collect data
 
