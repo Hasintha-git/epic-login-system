@@ -99,4 +99,37 @@ public class RegistrationDao {
         }
         return load;
     }
+
+    public boolean updateRegister(Registration r){
+        DBConnection connection = null;
+        try {
+            connection = new DBConnection();
+            PreparedStatement pstm = connection.getConnection().prepareStatement("UPDATE Registration SET userName=?,address=?,contact=?,password=?,role=? WHERE email=? ");
+            pstm.setObject(1,r.getUserName());
+            pstm.setObject(2,r.getAddress());
+            pstm.setObject(3,r.getContact());
+            pstm.setObject(4,r.getPassword());
+            pstm.setObject(5,r.getRole());
+            pstm.setObject(6,r.getEmail());
+            int i = pstm.executeUpdate();
+            if (i>=0){
+                return true;
+            }else{
+                return false;
+            }
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            try {
+                connection.connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return false;
+    }
 }
