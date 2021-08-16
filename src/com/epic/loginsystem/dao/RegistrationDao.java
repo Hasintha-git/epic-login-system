@@ -2,11 +2,9 @@ package com.epic.loginsystem.dao;
 
 
 import com.epic.loginsystem.db.DBConnection;
-import com.epic.loginsystem.db.MyListner;
 import com.epic.loginsystem.model.Registration;
 
 import javax.annotation.Resource;
-import javax.servlet.annotation.WebServlet;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,8 +56,8 @@ public class RegistrationDao {
         DBConnection dbConnection = null;
         try {
             dbConnection = new DBConnection();
-
-            PreparedStatement pstm = dbConnection.getConnection().prepareStatement("select * from Registration where email=?");
+            final String url="select * from Registration where email=?";
+            PreparedStatement pstm = dbConnection.getConnection().prepareStatement(url);
             pstm.setObject(1, email);
             ResultSet rst = pstm.executeQuery();
 
@@ -80,12 +78,6 @@ public class RegistrationDao {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } finally {
-            try {
-                dbConnection.connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
         }
         return r;
     }
@@ -97,7 +89,8 @@ public class RegistrationDao {
         ResultSet rst = null;
         dbConnection = new DBConnection();
         System.out.println("before go to db");
-        PreparedStatement pstm = dbConnection.getConnection().prepareStatement("SELECT * FROM Registration");
+        final String url="SELECT * FROM Registration";
+        PreparedStatement pstm = dbConnection.getConnection().prepareStatement(url);
         rst = pstm.executeQuery();
         System.out.println("get result");
         ArrayList<Registration> load = new ArrayList<>();
@@ -107,6 +100,7 @@ public class RegistrationDao {
 
             System.out.println("Add data");
         }
+        dbConnection.connection.close();
         return load;
     }
 
@@ -114,7 +108,8 @@ public class RegistrationDao {
         DBConnection connection = null;
         try {
             connection = new DBConnection();
-            PreparedStatement pstm = connection.getConnection().prepareStatement("UPDATE Registration SET userName=?,address=?,contact=?,password=?,role=? WHERE email=? ");
+            final String url="UPDATE Registration SET userName=?,address=?,contact=?,password=?,role=? WHERE email=?";
+            PreparedStatement pstm = connection.getConnection().prepareStatement(url);
             pstm.setObject(1, r.getUserName());
             pstm.setObject(2, r.getAddress());
             pstm.setObject(3, r.getContact());
@@ -147,7 +142,8 @@ public class RegistrationDao {
         DBConnection connection = null;
         try {
             connection = new DBConnection();
-            PreparedStatement pstm = connection.getConnection().prepareStatement("SELECT * FROM Registration WHERE userName=?");
+            final String url="SELECT * FROM Registration WHERE userName=?";
+            PreparedStatement pstm = connection.getConnection().prepareStatement(url);
             pstm.setObject(1, userName);
             ResultSet rst = pstm.executeQuery();
             ArrayList<Registration> load = new ArrayList<>();
@@ -159,6 +155,12 @@ public class RegistrationDao {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            try {
+                connection.connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         return null;
 
@@ -172,7 +174,8 @@ public class RegistrationDao {
         try {
             dbConnection = new DBConnection();
             System.out.println("before db connect");
-            PreparedStatement pstm = dbConnection.getConnection().prepareStatement("DELETE FROM Registration WHERE email=?");
+            final String url="DELETE FROM Registration WHERE email=?";
+            PreparedStatement pstm = dbConnection.getConnection().prepareStatement(url);
             pstm.setObject(1, email);
             System.out.println("deleted");
             i = pstm.executeUpdate();
