@@ -1,0 +1,27 @@
+.admin-body{
+    background: rgb(120,116,237);
+    background: radial-gradient(circle, rgba(120,116,237,0.4822303921568627) 0%, rgba(133,155,226,0) 36%, rgba(202,229,245,0) 96%);
+    font-family: 'Inconsolata', monospace;
+    height: 100vh;
+}
+.admin-nav-box {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 20vh
+}
+.searchBtn {
+    background-image: linear-gradient( 105.5deg, rgb(224, 162, 99) 11%, rgb(220, 144, 68) 74.9% );
+    width: 10em;
+    height: 2.5em;
+    border-radius: 25px;
+    border: none;
+    outline: 0;
+    color: white;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    letter-spacing: 1px;
+    font-family: 'Inconsolata', monospace;
+    transition: 5s;
+}
