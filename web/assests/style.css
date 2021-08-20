@@ -281,6 +281,33 @@
     align-items: center;
     flex-direction: column;
 }
+.popup3 .content-role {
+    max-height: 40%;
+    min-height: 40%;
+    overflow: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+.popup4 .content-new-role {
+    max-height: 10%;
+    min-height: 10%;
+    overflow: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+.popup .content-page {
+    max-height: 50%;
+    min-height: 45%;
+    overflow: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
 .popup .content-2 {
     max-height: 15%;
     min-height: 15%;

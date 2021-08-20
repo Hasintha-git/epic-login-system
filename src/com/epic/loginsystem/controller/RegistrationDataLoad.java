@@ -4,6 +4,9 @@ import com.epic.loginsystem.dao.RegistrationDao;
 import com.epic.loginsystem.model.Registration;
 import com.google.gson.Gson;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +29,12 @@ public class RegistrationDataLoad extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String countTo = req.getParameter("countTo");
+        String countFrom = req.getParameter("countFrom"); //collect data
+        System.out.println(countTo+ "-"+countFrom);
         ArrayList<Registration> details = null;
         try {
-            details = registrationDao.getDetails();
+            details = registrationDao.getDetails(countTo,countFrom);
             String data = new Gson().toJson(details);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");

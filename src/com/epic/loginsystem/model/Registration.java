@@ -11,13 +11,13 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(String email, String userName, String address, String contact, String password, String role) {
+    public Registration(String email, String userName, String address, String contact, String password,String role) {
         this.email = email;
         this.userName = userName;
         this.address = address;
         this.contact = contact;
         this.password = password;
-        this.role = role;
+        this.role=role;
     }
 
     public String getEmail() {

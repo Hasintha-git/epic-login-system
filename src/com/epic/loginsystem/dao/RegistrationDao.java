@@ -10,8 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class RegistrationDao {
-    @Resource(name = "java:comp/env/jdbc/pool")
-    DataSource ds;
+//    @Resource(name = "java:comp/env/jdbc/pool")
+//    DataSource ds;
 
 
     public boolean registerEmployee(Registration registration) throws ClassNotFoundException {
@@ -29,7 +29,6 @@ public class RegistrationDao {
             pstm.setObject(4, registration.getContact());
             pstm.setObject(5, registration.getPassword());
             pstm.setObject(6, registration.getRole());
-
             int i = pstm.executeUpdate();
             System.out.println(i);
             if (i >= 0) {
@@ -74,7 +73,7 @@ public class RegistrationDao {
                 r.setAddress(address); //data set to registration model
                 r.setContact(contact);//data set to registration model
                 r.setPassword(pass);//data set to registration model
-                r.setRole(role);
+                r.setRole(role);//data set to registration model
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -82,15 +81,16 @@ public class RegistrationDao {
         return r;
     }
 
-    public ArrayList<Registration> getDetails() throws SQLException, ClassNotFoundException {
+    public ArrayList<Registration> getDetails(String countTo, String countFrom) throws SQLException, ClassNotFoundException {
         System.out.println("come dao");
         Registration r = new Registration();
         DBConnection dbConnection = null;
         ResultSet rst = null;
         dbConnection = new DBConnection();
         System.out.println("before go to db");
-        final String url="SELECT * FROM Registration";
+        final String url="SELECT * FROM Registration LIMIT "+countTo+","+countFrom;
         PreparedStatement pstm = dbConnection.getConnection().prepareStatement(url);
+
         rst = pstm.executeQuery();
         System.out.println("get result");
         ArrayList<Registration> load = new ArrayList<>();
@@ -114,8 +114,8 @@ public class RegistrationDao {
             pstm.setObject(2, r.getAddress());
             pstm.setObject(3, r.getContact());
             pstm.setObject(4, r.getPassword());
-            pstm.setObject(5, r.getRole());
-            pstm.setObject(6, r.getEmail());
+            pstm.setObject(5, r.getEmail());
+            pstm.setObject(6, r.getRole());
             int i = pstm.executeUpdate();
             if (i >= 0) {
                 return true;
@@ -186,5 +186,55 @@ public class RegistrationDao {
             dbConnection.connection.close();
         }
         return 0;
+    }
+
+
+
+    public ArrayList<String> checkRole(String email) {
+        final String url="SELECT * FROM user_role WHERE email=?";
+        try {
+            DBConnection dbConnection = new DBConnection();
+            PreparedStatement pstm = dbConnection.connection.prepareStatement(url);
+            pstm.setObject(1,email);
+            ResultSet rst = pstm.executeQuery();
+            ArrayList<String> role = new ArrayList<>();
+            while (rst.next()) {
+                role.add(Integer.parseInt(rst.getString(1)), rst.getString(2));
+            }
+
+            return role;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public boolean addPage(String pageName, String des) {
+        DBConnection connection = null;
+        try {
+            connection = new DBConnection();
+            System.out.println("user role dao");
+            PreparedStatement pstm = connection.getConnection().prepareStatement("insert into Pages values(?,?)");
+            System.out.println("db go and come to daaoooooo");
+            pstm.setObject(1,pageName);
+            pstm.setObject(2,des);
+            int i = pstm.executeUpdate();
+            System.out.println(i);
+            if (i >= 0) {
+
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
     }
 }

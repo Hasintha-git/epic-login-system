@@ -25,3 +25,12 @@
     font-family: 'Inconsolata', monospace;
     transition: 5s;
 }
+
+.btnPopup {
+    background-color: yellow;
+    border: none;
+    border-radius: 50px;
+    color: black;
+
+}
+

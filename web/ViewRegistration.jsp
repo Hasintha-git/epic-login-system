@@ -26,20 +26,7 @@
 </div>
 
 <div  style="align-items: center;display: flex;height: 80vh;flex-direction: column">
-    <div class="container" style="margin-top: 35px">
-        <h4>Select number of rows</h4>
-        <div class="form-group">
-            <select name="state" id="maxRows" class="form-control" style="width: 150px">
-                <option value="5000">show all</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="75">75</option>
-                <option value="100">100</option>
-            </select>
-        </div>
-    </div>
+
     <div class="col-md-8">
         <table class="table table-success table-striped">
             <thead>
@@ -49,21 +36,22 @@
                 <th>Address</th>
                 <th>Contact</th>
                 <th>Password</th>
-                <th>Role</th>
+                <th>role</th>
                 <th>Update</th>
                 <th>Delete</th>
             </tr>
             </thead>
-            <tbody id="tblRegistration" style="#333333: white;cursor: pointer;">
+            <tbody id="tblRegistration" name="tblRegistration" style="#333333: white;cursor: pointer;">
             </tbody>
         </table>
-        <div class="pagination-container">
-            <nav>
-                <ul class="pagination"></ul>
-            </nav>
-        </div>
-    </div>
 
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" id="Previous" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" id="Next" href="#">Next</a></li>
+        </ul>
+    </nav>
 <%--    update popup--%>
     <div id="popup1" class="overlay">
         <div class="popup">
@@ -117,12 +105,29 @@
 <script src="jquery.twbsPagination.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
+
+    let countTo=0;
+    let countFrom=5;
+    $("#Previous").click(function (){
+        if(countTo!=0){
+            countTo=countTo-5;
+            countFrom=countFrom-5;
+            loadData()
+        }
+
+    });
+
+    $("#Next").click(function () {
+        countTo=countTo+5;
+        countFrom=countFrom+5;
+        loadData()
+    });
+
     $("#loadAll").click(function (){
         loadData();
     })
     window.onload=(function (){
         // $('#tblRegistration').pageMe({pagerSelector:'#pagination',showPrevNext:true,hidePageNumbers:false,perPage:2});
-
         loadData();
 
     })
@@ -134,6 +139,10 @@
             url: '/LoginSystem/loadData',
             method: 'GET',
             async: true,
+            data:{
+                "countTo":countTo,
+                "countFrom":countFrom,
+            },
             dataType: "json",
             contentType:"application/json",
             success: function (response,textState, xhr) {
@@ -141,39 +150,17 @@
                 // console.log(textState)
                 // console.log(xhr)
                 // $("#tblRegistration").remove();
-
                 for (var i=0; i<response.length; i++) {
-
                     <%--var row = `<tr><td>${cus.email}</td><td>${cus.userName}</td><td>${cus.address}</td><td>${cus.contact}</td><td>${cus.password}</td><td>${cus.role}</td></tr>`;--%>
-                    var row = $('<tr><td id="mail">' + response[i].email+ '</td><td>' + response[i].userName + '</td><td>' + response[i].address + '</td><td>' + response[i].contact + '</td><td>' + response[i].password + '</td><td>' + response[i].role + '</td>' +
-                        '<td><a id="up" href="#popup1">Update</a></td><td><a href="#deleteRow">Delete</a></td></tr>');
+                    var row = $('<tr><td id="mail">' + response[i].email+ '</td><td>' + response[i].userName + '</td><td>' + response[i].address + '</td><td>' + response[i].contact + '</td><td>' + response[i].password + '</td><td id="role">' + response[i].role+ '</td>' +
+                        '<td><a id="up" href="#popup1"><img src="assests/img/update.png" alt="" ></a></td><td><a href="#deleteRow"><img src="assests/img/delete.png"  alt=""></a></td></tr>');
                     $("#tblRegistration").append(row);
                 }
             }
         });
     }
 
-    var table=$("#tblRegistration");
-    $("#maxRows").on("change",function (){
-        $(".pagination").html()
-        var trnum=0;
-        var maxRows=parseInt(($(this).val()))
-        var
-    })
 
-    $("#next").click(function () {
-        $pagination.twbsPagination({
-            totalPages: totalPages,
-            visiblePages: 5,
-            onPageClick: function (event, page) {
-                displayRecordsIndex = Math.max(page - 2, 0) * recPerPage;
-                endRec = (displayRecordsIndex) + recPerPage;
-
-                displayRecords = records.slice(displayRecordsIndex, endRec);
-                generate_table();
-            }
-        });
-    });
     //
     $("#back").click(function (){
         window.location.href="AdminHome.jsp";
@@ -186,14 +173,12 @@
         let adress = $(evt.target).closest("tr").children('td:eq(2)').text();
         let contact = $(evt.target).closest("tr").children('td:eq(3)').text();
         let  password= $(evt.target).closest("tr").children('td:eq(4)').text();
-        let role = $(evt.target).closest("tr").children('td:eq(5)').text();
 
         $("#email").val(email)
         $("#userName").val(userName)
         $("#address").val(adress)
         $("#phone").val(contact)
         $("#password").val(password)
-        rowSelectRole=role;
         deleteMail=email;
     })
     $("#update").click(function (){
@@ -228,32 +213,32 @@
     var allData=null;
     var Name=/^[A-Z]{1}[a-z]{1,9}$/;
     $("#search").on("keydown",function (e){
+
         var input=(e.key);
         let inputName=$('#search').val();
         if (Name.test(inputName)){
             if (input=="Enter"){
+                countTo=0;
+                countFrom=5;
                 $("#tblRegistration").empty();
                 $.ajax({
-                            url: '/LoginSystem/details',
-                            method: 'GET',//go to doGet method
-                            async: true,
-                            data: {"userName":inputName},//json data
-                            dataType: "json",// convert response into JSON if valid
-                            success: function (response,textState, xhr) {
-                                allData=response;
-                                if($("#tblRegistration").empty()){
-                                    for (var i=0; i<response.length; i++) {
-                                        <%--var row = `<tr><td>${cus.email}</td><td>${cus.userName}</td><td>${cus.address}</td><td>${cus.contact}</td><td>${cus.password}</td><td>${cus.role}</td></tr>`;--%>
-                                        var row = $('<tr><td id="mail">' + response[i].email+ '</td><td>' + response[i].userName + '</td><td>' + response[i].address + '</td><td>' + response[i].contact + '</td><td>' + response[i].password + '</td><td>' + response[i].role + '</td>' +
-                                            '<td><a id="up" href="#popup1">Update</a></td><td><a href="#deleteRow">Delete</a></td></tr>');
-                                        $("#tblRegistration").append(row);
-
-                                    }
+                       url: '/LoginSystem/details',
+                       method: 'GET',//go to doGet method
+                       async: true,
+                       data: {"userName":inputName},//json data
+                       dataType: "json",// convert response into JSON if valid
+                       success: function (response,textState, xhr) {
+                        allData=response;
+                            if($("#tblRegistration").empty()) {
+                                for (var i = 0; i < response.length; i++) {
+                                    <%--var row = `<tr><td>${cus.email}</td><td>${cus.userName}</td><td>${cus.address}</td><td>${cus.contact}</td><td>${cus.password}</td><td>${cus.role}</td></tr>`;--%>
+                                    var row = $('<tr><td id="mail">' + response[i].email + '</td><td>' + response[i].userName + '</td><td>' + response[i].address + '</td><td>' + response[i].contact + '</td><td>' + response[i].password + '</td><td id="role">' + response[i].role + '</td>' +
+                                        '<td><a id="up" href="#popup1">Update</a></td><td><a href="#deleteRow">Delete</a></td></tr>');
+                                    $("#tblRegistration").append(row);
                                 }
-
-                            },
-
-                        });
+                            }
+                        },
+                });
             }
         }
     })

@@ -66,7 +66,7 @@
         var address = $("#address").val();
         var contact = $("#phone").val();
         var password = $("#password").val();
-        var role = "Home.jsp";
+        var role = "Customer";
         // var form = $("#signinForm").serialize();
 
         $.ajax({
